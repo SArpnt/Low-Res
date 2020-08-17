@@ -2,7 +2,7 @@
 // @name         Low-Res boxcritters
 // @description  yes blocky blur
 // @author       SArpnt
-// @version      mmm gooodyes yes
+// @version      very mmm gooodyes yes
 // @namespace    https://boxcrittersmods.ga/authors/sarpnt/
 // @homepage     https://boxcrittersmods.ga/mods/low-res/
 // @updateURL    https://github.com/SArpnt/Low-Res/raw/master/Low-Res.user.js
@@ -34,26 +34,28 @@
 	}
 
 	function start() {
-		if (world.stage.hUpdate)
+		if (!window.cardboard) actualStart();
+		else if (world.stage.hUpdate)
 			fool(`you fool
 you blongus
 you absolute utter kerplongus
 you can't use low-res and hi-res at the same time`);
-		else if (cardboard.mods && cardboard.mods.bigScreen)
+		else if (window.cardboard.mods && window.cardboard.mods.bigScreen)
 			fool(`screen is too big
 extra large pixel machine broke
 understandable have a nice day`);
-		else {
-			let resize = function () {
-				canvas.width = 100;
-				canvas.height = 200;
+		else
+			actualStart();
+		function actualStart() {
+			canvas.width = 100;
+			canvas.height = 200;
+			world.stage.scaleX = canvas.width / 855;
+			world.stage.scaleY = canvas.height / 480;
 
-				world.stage.scaleX = canvas.width / 855;
-				world.stage.scaleY = canvas.height / 480;
-
-				canvas.style.height = canvas.offsetWidth / 855 * 480 + 'px';
-			};
+			let resize = _ => canvas.style.height = canvas.offsetWidth / 855 * 480 + 'px';
 			window.addEventListener('resize', resize);
+			resize();
+
 			createjs.Ticker.framerate = 8;
 			createjs.Sound.on("fileload", function () {
 				createjs.Sound.play("music", { loop: -1, volume: .9, delay: 5, });
@@ -62,15 +64,14 @@ understandable have a nice day`);
 				createjs.Sound.play("music", { loop: -1, volume: .4, delay: 240, });
 				createjs.Sound.play("music", { loop: -1, volume: .6, delay: 480, });
 			});
-			resize();
 		}
 	}
 
 	if (canvas) {
 		if (world && world.stage)
 			start();
-		else if (cardboard)
-			cardboard.on('worldStageCreated', _ => setTimeout(start, 0));
+		else if (window.cardboard)
+			window.cardboard.on('worldStageCreated', _ => setTimeout(start, 0));
 		else
 			fool(`what kind of backwards garbage mod setup has no
 ${world ? 'world.stage' : 'world'} on page load but doesn't use cardboard`);
