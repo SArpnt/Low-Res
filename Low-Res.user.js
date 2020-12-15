@@ -11,12 +11,7 @@
 // @icon         https://github.com/SArpnt/Low-Res/raw/master/icon16.png
 // @run-at       document-end
 // @grant        none
-// @match        https://boxcritters.com/play/
-// @match        https://boxcritters.com/play/?*
-// @match        https://boxcritters.com/play/#*
-// @match        https://boxcritters.com/play/index.html
-// @match        https://boxcritters.com/play/index.html?*
-// @match        https://boxcritters.com/play/index.html#*
+// @include      /^https:\/\/boxcritters\.com\/play\/(index\.html)?([\?#].*)?$/
 // ==/UserScript==
 
 (function () {
